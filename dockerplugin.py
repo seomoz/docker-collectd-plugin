@@ -192,8 +192,6 @@ class ContainerStats(threading.Thread):
         self._feed = None
         self._stats = None
 
-        self._sleep = 10
-
         # Automatically start stats reading thread
         self.start()
 
@@ -219,10 +217,9 @@ class ContainerStats(threading.Thread):
                 # stop the thread. If the container is still there, we'll spin
                 # up a new stats gathering thread the next time read_callback()
                 # gets called by CollectD.
-                time.sleep(self._sleep)
+                time.sleep(40)
                 failures += 1
-                self._sleep = self._sleep * 2
-                if failures > 5:
+                if failures > 3:
                     self.stop = True
 
                 # Marking the feed as dead so we'll attempt to recreate it and
