@@ -24,8 +24,11 @@ EOF)"
 }
 
 main(){
+  # Ensure test app is running
   deploy_test_app
+  # Deploy resources and restart collectd
   script="$(cat <<EOF
+    [ -d /var/lib/collectd/csv ] && sudo rm -rf /var/lib/collectd/csv/*
     [ ! -d /usr/share/collectd/python ] && sudo mkdir /usr/share/collectd/python
     sudo cp -f /vagrant/config/* /etc/collectd/collectd.conf.d/
     sudo cp -f /vagrant/dockerplugin.py /usr/share/collectd/python/
